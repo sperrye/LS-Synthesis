@@ -8,14 +8,16 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const items = {};
+const order = [];
 
 app.get('/items', (req, res) => {
-	const values = Object.keys(items).map(key => items[key]);
+	const values = order.map(key => items[key]);
 	res.send(values);
 });
 
 app.post('/new-item', (req, res) => {
 	const key = req.body.id;
+	order.push(key);
 	const value = req.body;
 	items[key] = value;
 	res.end('successfully added');
