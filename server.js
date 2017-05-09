@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const express = require('express');
 const cors = require('cors');
@@ -9,31 +9,31 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-let nextItemId = 0;
+let nextClipId = 2;
 function getNextId() {
-  return (nextItemId++).toString();
+  return (nextClipId++).toString();
 }
 
-const items = [];
+const clips = [];
 
-app.get('/items', (req, res) => {
-  res.send(items.map(item => {
-    return { id: item.id, name: item.name };
+app.get('/clips', (req, res) => {
+  res.send(clips.map(clip => {
+    return { id: clip.id, name: clip.name };
   }));
 });
 
-app.get('/items/:id', (req, res) => {
-  const item = items.find(item => item.id === req.params.id) || null;
-  res.send(item);
+app.get('/clips/:id', (req, res) => {
+  const clip = clips.find(clip => clip.id === req.params.id) || null;
+  res.send(clip);
 });
 
-app.post('/items', (req, res) => {
-  const newItem = Object.assign({}, req.body, {
+app.post('/clips', (req, res) => {
+  const newClip = Object.assign({}, req.body, {
     id: getNextId()
   });
 
-  items.push(newItem);
-  res.send(newItem);
+  clips.push(newClip);
+  res.send(newClip);
 });
 
 app.listen(5000, () => {
