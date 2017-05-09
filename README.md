@@ -1,4 +1,4 @@
-# Routing Review 
+# Routing Review
 
 ## Project Description
 
@@ -6,16 +6,18 @@ Given the provided API documentation design a user interface to interact with th
 
 `[GET] /items`
  * Returns an array of all of the items stored on the server. This will start as an empty array.
+ * The items that will be returned will only have their `id` property and `name` property.
 
-`[POST] /new-item`
+`[POST] /items`
  * Accepts an object that will be saved on the server.
- * Should have an `id` property that contains a unique `id` for the item.  This will NOT work if you do not provide an `id` property spelled exactly that way.
+ * It's `id` property will be generated automatically on the server.
+ * It must have a `name` property.
 
 `[GET] /items:id`
- * Will retrieve a previously saved item that has a matching `id`.  The `id` can be of any type.
+ * Will retrieve a previously saved item that has a matching `id`.  This will return the complete item object with all of its properties.
 
 ### Notes/Hints
- * This is pretty open ended.  Be creative and have fun with what you build.  The API can store objects with any number of properties so long as the objects each have a unique `id` property.
- * If you try to post an item that matches an existing item's `id` then you will overwrite the existing item.
- * If your server gets into a weird state you can restart it.
-
+ * All objects should have a `name` property.  The server will automatically generate an `id`.  If you would like this property to be something other than `name` then you can change it on line 21 in `server.js`.  (`name: item.name` could be change to `someDifferentPropertyName: item.someDifferentPropertyName`)
+ * The `id` is generated on the server.  Do not pass in an `id`, if you do it will be overwritten.
+ * This is pretty open ended.  Be creative and have fun with what you build.  The API can store objects with any number of properties.
+ * If your server gets into a weird state you can restart it.  None of the information on the server is being saved to disk so a simple restart will wipe it clean.

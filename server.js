@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,27 +9,33 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const items = {};
-const order = [];
+let nextItemId = 0;
+function getNextId() {
+  return (nextItemId++).toString();
+}
+
+const items = [];
 
 app.get('/items', (req, res) => {
-	const values = order.map(key => items[key]);
-	res.send(values);
-});
-
-app.post('/new-item', (req, res) => {
-	const key = req.body.id;
-	order.push(key);
-	const value = req.body;
-	items[key] = value;
-	res.end('successfully added');
+  res.send(items.map(item => {
+    return { id: item.id, name: item.name };
+  }));
 });
 
 app.get('/items/:id', (req, res) => {
-	const value = items[req.params.id];
-	res.send(value);
+  const item = items.find(item => item.id === req.params.id) || null;
+  res.send(item);
+});
+
+app.post('/items', (req, res) => {
+  const newItem = Object.assign({}, req.body, {
+    id: getNextId()
+  });
+
+  items.push(newItem);
+  res.send(newItem);
 });
 
 app.listen(5000, () => {
-	console.log('Server listening on port 5000');
+  console.log('Server listening on port 5000');
 });
